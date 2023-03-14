@@ -19,6 +19,7 @@ torch==1.13.1
 torchvision==0.14.1
 tqdm>=4.64.0
 python-dotenv==0.19.2
+ultralytics==8.0.53
 
 # Plotting ------------------------------------
 pandas==1.4.4
