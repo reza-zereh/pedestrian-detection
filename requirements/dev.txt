@@ -1,0 +1,36 @@
+# Dev tools -----------------------------------
+flake8==6.0.0
+isort==5.12.0
+black==23.1.0
+pre-commit==3.1.1
+interrogate==1.5.0
+tox==4.4.7
+pytest==7.2.2
+
+# Base ----------------------------------------
+matplotlib>=3.2.2
+numpy==1.22.4
+opencv-python==4.7.0.72
+Pillow>=7.1.2
+PyYAML>=5.3.1
+requests>=2.23.0
+scipy==1.10.1
+torch==1.13.1
+torchvision==0.14.1
+tqdm>=4.64.0
+python-dotenv==0.19.2
+ultralytics==8.0.53
+
+# Plotting ------------------------------------
+pandas==1.4.4
+seaborn>=0.11.0
+
+# Export --------------------------------------
+onnx==1.13.1  # ONNX export
+onnxsim==0.4.17  # ONNX simplifier
+
+# Extras --------------------------------------
+psutil  # system utilization
+thop>=0.1.1  # FLOPs computation
+ipython  # interactive notebook
+pycocotools>=2.0.6  # COCO mAP
