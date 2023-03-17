@@ -26,8 +26,7 @@ pandas==1.4.4
 seaborn>=0.11.0
 
 # Export --------------------------------------
-onnx==1.13.1  # ONNX export
-onnxsim==0.4.17  # ONNX simplifier
+clearml==1.9.3
 
 # Extras --------------------------------------
 psutil  # system utilization
