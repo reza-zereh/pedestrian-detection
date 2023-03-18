@@ -1,4 +1,5 @@
 import io
+from typing import List
 
 import pooch
 from PIL import Image
@@ -55,14 +56,14 @@ def get_image_from_bytes(binary_image, max_size=1024):
     return resized_image
 
 
-def get_detection_results(results: Results) -> list[dict]:
+def get_detection_results(results: Results) -> List[dict]:
     """Build a human readable list of detection results.
 
     Args:
         results (Results): YOLO detection results.
 
     Returns:
-        list[dict]: List of dictionaries, where each dictionary contains 'cls', 'xyxyn', 'xywhn'
+        List[dict]: List of dictionaries, where each dictionary contains 'cls', 'xyxyn', 'xywhn'
     """
     return [
         {
