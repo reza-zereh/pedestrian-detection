@@ -11,12 +11,6 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
 )
 
-
-@app.get("/")
-def index():
-    return {"message": "Pedestrian Detection Service"}
-
-
 app.include_router(api.router, prefix=settings.API_V1_STR)
 
 if __name__ == "__main__":
