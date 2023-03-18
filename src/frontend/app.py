@@ -9,6 +9,7 @@ import numpy as np
 import requests
 import streamlit as st
 from streamlit_webrtc import WebRtcMode, webrtc_streamer
+from PIL import Image
 
 logger = logging.getLogger(__name__)
 
@@ -42,11 +43,14 @@ result_queue: "queue.Queue[List[Detection]]" = queue.Queue()
 
 def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     image = frame.to_ndarray(format="bgr24")
-    frame_file = io.BytesIO(image)
+    img_pil = Image.fromarray(image)
+    img_io_bytes = io.BytesIO()
+    img_pil.save(img_io_bytes, "PNG")
+    img_bytes = img_io_bytes.getvalue()
 
     # Call inference API
     url = "http://3.132.96.178:8000/api/v1/detect"
-    res = requests.post(url, files={"file": frame_file})
+    res = requests.post(url, files={"file": img_bytes})
     output = res.json()
 
     h, w = image.shape[:2]
