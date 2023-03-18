@@ -5,10 +5,10 @@ from datetime import datetime
 from types import FrameType
 from typing import List, cast
 
+from app import paths
 from loguru import logger
 from pydantic import AnyHttpUrl, BaseSettings
 
-from app import paths
 
 class LoggingSettings(BaseSettings):
     LOGGING_LEVEL: int = logging.INFO  # logging levels are type int
@@ -63,14 +63,20 @@ def setup_app_logging(config: Settings) -> None:
     logging.getLogger().handlers = [InterceptHandler()]
     for logger_name in LOGGERS:
         logging_logger = logging.getLogger(logger_name)
-        logging_logger.handlers = [InterceptHandler(level=config.logging.LOGGING_LEVEL)]
+        logging_logger.handlers = [
+            InterceptHandler(level=config.logging.LOGGING_LEVEL)
+        ]
 
     handlers = [{"sink": sys.stderr, "level": config.logging.LOGGING_LEVEL}]
     if os.environ.get("APP_ENV") == "docker":  # production logs
-        log_fp = str(paths.PROD_LOGS_DIR / f"{str(datetime.utcnow().date())}_prod.log")
-        handlers.append({"sink": log_fp, "level": config.logging.LOGGING_LEVEL})
+        log_fp = str(
+            paths.PROD_LOGS_DIR / f"{str(datetime.utcnow().date())}_prod.log"
+        )
+        handlers.append(
+            {"sink": log_fp, "level": config.logging.LOGGING_LEVEL}
+        )
 
     logger.configure(handlers=handlers)
-    
-    
+
+
 settings = Settings()
