@@ -1,6 +1,6 @@
 from app import api
 from app.config import settings, setup_app_logging
-from fastapi import APIRouter, FastAPI
+from fastapi import FastAPI
 from loguru import logger
 
 # setup logging as early as possible
