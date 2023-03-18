@@ -127,3 +127,9 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom rules
+.vscode/
+.idea/
+interrogate_badge.svg
+
