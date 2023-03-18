@@ -4,6 +4,7 @@ from functools import lru_cache
 import pooch
 from PIL import Image
 from ultralytics import YOLO
+from ultralytics.yolo.engine.results import Results
 
 
 def get_checkpoint_fp():
@@ -35,3 +36,14 @@ def get_image_from_bytes(binary_image, max_size=1024):
         )
     )
     return resized_image
+
+
+def get_detection_results(results: Results) -> list:
+    return [
+        {
+            "cls": str(results.names[cls]),
+            "xyxyn": box.xyxyn.numpy().ravel().tolist(),
+            "xywhn": box.xywhn.numpy().ravel().tolist(),
+        }
+        for box, cls in zip(results.boxes, results.boxes.cls.numpy())
+    ]
