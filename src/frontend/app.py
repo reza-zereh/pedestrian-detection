@@ -1,6 +1,7 @@
 import io
 import logging
 import queue
+import threading
 from typing import List, NamedTuple
 
 import av
@@ -35,6 +36,7 @@ def generate_label_colors():
 COLORS = generate_label_colors()
 
 
+lock = threading.Lock()
 # NOTE: The callback will be called in another thread,
 #       so use a queue here for thread-safety to pass the data
 #       from inside to outside the callback.
@@ -46,6 +48,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     img_pil = Image.fromarray(image)
     img_io_bytes = io.BytesIO()
     img_pil.save(img_io_bytes, "PNG")
+    img_pil.save("1.png", "PNG")
     img_bytes = img_io_bytes.getvalue()
 
     # Call inference API
@@ -58,12 +61,12 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     # Convert the output array into a structured form
     detections = [
         Detection(
-            class_id=detection["class_id"],
-            label=detection["label"],
-            score=detection["score"],
+            class_id=int(detection["class_id"]),
+            label=str(detection["label"]),
+            score=float(detection["score"]),
             box=(detection["xyxyn"] * np.array([w, h, w, h])),
         )
-        for detection in output
+        for detection in output["results"]
     ]
 
     # Render bounding boxes and captions
@@ -88,7 +91,7 @@ def video_frame_callback(frame: av.VideoFrame) -> av.VideoFrame:
     return av.VideoFrame.from_ndarray(image, format="bgr24")
 
 
-webrtc_ctx = webrtc_streamer(
+ctx = webrtc_streamer(
     key="object-detection",
     mode=WebRtcMode.SENDRECV,
     rtc_configuration={
@@ -100,14 +103,19 @@ webrtc_ctx = webrtc_streamer(
     async_processing=True,
 )
 
-if st.checkbox("Show the detected labels", value=True):
-    if webrtc_ctx.state.playing:
+c = 0
+while ctx.state.playing:
+    if st.checkbox("Show the detected labels", value=True):
         labels_placeholder = st.empty()
         # NOTE: The video transformation with object detection and
         # this loop displaying the result labels are running
         # in different threads asynchronously.
         # Then the rendered video frames and the labels displayed here
         # are not strictly synchronized.
-        while True:
+        with lock:
             result = result_queue.get()
-            labels_placeholder.table(result)
+        if result is None:
+            continue
+        c = c + 1
+        print(f">>>>>>>>>>>>>>> c: {c}")
+        labels_placeholder.table(result)
