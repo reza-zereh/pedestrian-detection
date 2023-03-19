@@ -1,3 +1,5 @@
+import os
+
 import streamlit as st
 import utils
 
@@ -36,18 +38,16 @@ def main():
             title_placeholder.title(
                 "Pedestrian detection in pre-recorded videos"
             )
-            # object_detection_video.has_beenCalled = False
-            # object_detection_video()
-            # if object_detection_video.has_beenCalled:
-            # try:
-            #     clip = moviepy.VideoFileClip("detected_video.mp4")
-            #     clip.write_videofile("myvideo.mp4")
-            #     st_video = open("myvideo.mp4", "rb")
-            #     video_bytes = st_video.read()
-            #     st.video(video_bytes)
-            #     st.write("Detected Video")
-            # except OSError:
-            #     """"""
+            output_vid_fp = utils.object_detection_video()
+            try:
+                if output_vid_fp:
+                    st_video = open(output_vid_fp, "rb")
+                    video_bytes = st_video.read()
+                    st.write("Detected Video")
+                    st.video(video_bytes)
+                    os.remove(output_vid_fp)
+            except OSError:
+                """"""
         elif choice == "Pedestrian Detection (Webcam)":
             title_placeholder.title(
                 "Pedestrian detection in webcam video stream"
