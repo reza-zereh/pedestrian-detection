@@ -101,8 +101,7 @@ def object_detection_video():
             out = cv2.VideoWriter(
                 intermediate_vid_fp,
                 cv2.VideoWriter_fourcc(*"MJPG"),
-                # cv2.VideoWriter_fourcc(*"MPV4"),
-                20.0,
+                30.0,
                 (frame_width, frame_height),
             )
             count = 0
