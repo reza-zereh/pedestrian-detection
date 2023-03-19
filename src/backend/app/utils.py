@@ -63,13 +63,20 @@ def get_detection_results(results: Results) -> List[dict]:
         results (Results): YOLO detection results.
 
     Returns:
-        List[dict]: List of dictionaries, where each dictionary contains 'cls', 'xyxyn', 'xywhn'
+        List[dict]: List of dictionaries, where each dictionary
+        contains 'class_id', 'label', 'score', 'xyxyn', 'xywhn'
     """
     return [
         {
-            "cls": str(results.names[cls]),
+            "class_id": int(cls),
+            "label": str(results.names[cls]),
+            "score": float(conf),
             "xyxyn": box.xyxyn.numpy().ravel().tolist(),
             "xywhn": box.xywhn.numpy().ravel().tolist(),
         }
-        for box, cls in zip(results.boxes, results.boxes.cls.numpy())
+        for box, cls, conf in zip(
+            results.boxes,
+            results.boxes.cls.numpy(),
+            results.boxes.conf.numpy(),
+        )
     ]
