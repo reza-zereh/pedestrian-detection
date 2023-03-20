@@ -1,0 +1,27 @@
+name: Build and push backend application (CPU version) Docker image upon release
+
+on:
+  # Build and push Docker images *only* for releases.
+  release:
+    types: [published] # , created, edited
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./src/backend/cpu.Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/pedestrian_detection_backend_cpu:latest
