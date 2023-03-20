@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.6.0-base-ubuntu20.04 AS build1
+FROM python:3.9-slim AS build1
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
     libsm6 \
@@ -12,12 +12,10 @@ RUN apt-get update \
     gcc \
     g++ \
     cmake \
-    python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 FROM build1 AS build2
-COPY ./requirements.txt /tmp/requirements.txt
-RUN python3 -m pip install --upgrade pip
+COPY requirements.txt /tmp/requirements.txt
 RUN pip install \
     --no-cache-dir \
     --user \
@@ -30,6 +28,7 @@ ENV PATH=/root/.local/bin:$PATH
 ENV APP_ENV docker
 ENV PYTHONUNBUFFERED 1
 WORKDIR /code
-COPY ./app /code/app
+COPY app /code/app
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
+
