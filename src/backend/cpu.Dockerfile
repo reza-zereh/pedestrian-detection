@@ -1,3 +1,5 @@
+# This Dockerfile is intented to be run using github action workflow
+# for pushing to docker hub registery
 FROM python:3.9-slim AS build1
 RUN apt-get update \
     && apt-get install --no-install-recommends -y \
