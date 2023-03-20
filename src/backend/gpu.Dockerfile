@@ -12,10 +12,12 @@ RUN apt-get update \
     gcc \
     g++ \
     cmake \
+    python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 FROM build1 AS build2
 COPY requirements.txt /tmp/requirements.txt
+RUN python3 -m pip install --upgrade pip
 RUN pip install \
     --no-cache-dir \
     --user \
