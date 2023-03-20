@@ -5,6 +5,8 @@ black==23.1.0
 pre-commit==3.1.1
 interrogate==1.5.0
 pytest==7.2.2
+tox==4.4.7
+httpx==0.23.3
 
 # Base ----------------------------------------
 matplotlib==3.7.1
@@ -31,7 +33,6 @@ clearml==1.9.3
 psutil  # system utilization
 thop>=0.1.1  # FLOPs computation
 ipython  # interactive notebook
-pycocotools>=2.0.6  # COCO mAP
 
 # API -----------------------------------------
 fastapi==0.94.1
@@ -40,9 +41,11 @@ pydantic==1.10.6
 python-multipart==0.0.5
 aiofiles==22.1.0
 loguru==0.6.0
+pooch==1.7.0
 
 # Frontend ------------------------------------
 av==10.0.0
 streamlit==1.20.0
 streamlit-webrtc==0.45.0
 moviepy==1.0.3
+
