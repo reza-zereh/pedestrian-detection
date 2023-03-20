@@ -19,7 +19,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v4
         with:
-          context: .
-          file: ./src/backend/cpu.Dockerfile
+          context: ./src/backend
+          file: ./cpu.Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/pedestrian_detection_backend_cpu:latest
