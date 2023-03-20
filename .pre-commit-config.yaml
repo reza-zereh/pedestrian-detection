@@ -20,10 +20,3 @@ repos:
     rev: 5.12.0
     hooks:
       - id: isort
-  - repo: https://github.com/econchick/interrogate
-    rev: 1.5.0
-    hooks:
-      - id: interrogate
-        exclude: ^notebooks/|^tests/
-        args: [-v, -i, --fail-under=80]
-
