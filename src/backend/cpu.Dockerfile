@@ -15,7 +15,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 FROM build1 AS build2
-COPY requirements.txt /tmp/requirements.txt
+COPY ./src/backend/requirements.txt /tmp/requirements.txt
 RUN pip install \
     --no-cache-dir \
     --user \
@@ -28,7 +28,7 @@ ENV PATH=/root/.local/bin:$PATH
 ENV APP_ENV docker
 ENV PYTHONUNBUFFERED 1
 WORKDIR /code
-COPY app /code/app
+COPY ./src/backend/app /code/app
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
 
